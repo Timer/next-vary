@@ -9,7 +9,18 @@ const openrouter = createOpenRouter({
 async function* generateTranslation(content, language) {
   const result = streamText({
     model: openrouter("openai/gpt-4o-mini"),
-    prompt: `Translate the following poem to ${language}, ensuring to use country-specific words, phrases, and slang where applicable. If the target language is English (any variant), feel free to introduce region-specific expressions or idioms:\n\n${content}`,
+    prompt: `Translate the following poem to ${language}, ensuring to use country-specific words, phrases, and slang where applicable. If the target language is English (any variant), feel free to introduce region-specific expressions or idioms.
+
+Important: Do NOT translate the following technical terms - keep them exactly as they appear:
+- Next.js
+- React
+- CDN
+- Fluid compute
+- Vercel
+
+Here's the text to translate:
+
+${content}`,
   })
 
   for await (const chunk of result.textStream) {
