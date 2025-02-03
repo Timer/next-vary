@@ -28,7 +28,7 @@ export default async function LanguageDemo() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold">Language-based Content Demo</h1>
+      <h1 className="text-3xl font-bold">AI-powered content negotiation</h1>
       <p>
         This demo shows how the Vary header can be used for content negotiation based on the Accept-Language header. The
         server will serve different content depending on the user's preferred language.
@@ -45,12 +45,11 @@ export default async function LanguageDemo() {
       <p>The server sets the following headers for this response:</p>
       <pre className="bg-gray-100 p-4 rounded">
         {`Vary: Accept-Language
-Cache-Control: s-maxage=60, stale-while-revalidate=86400`}
+Cache-Control: s-maxage=60`}
       </pre>
       <p>
-        This means that the response will be cached separately for different Accept-Language values, and shared caches
-        (like CDNs) will store it for 60 seconds. After this time, the content can be served stale for up to 24 hours
-        while it's being revalidated in the background.
+        This means that the response will be cached separately for different Accept-Language values, and Vercel will
+        store it for 60 seconds.
       </p>
       <p>
         Try changing your browser's language settings or using the "Accept-Language" header in your request to see the
@@ -58,17 +57,4 @@ Cache-Control: s-maxage=60, stale-while-revalidate=86400`}
       </p>
     </div>
   )
-}
-
-export function generateMetadata() {
-  return {
-    title: "Language-based Content Demo",
-  }
-}
-
-export async function generateHeaders() {
-  return {
-    Vary: "Accept-Language",
-    "Cache-Control": "public, max-age=0, s-maxage=60, stale-while-revalidate=86400",
-  }
 }

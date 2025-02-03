@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Vary Header Demo - Language-based Content",
-  description: "Interactive demo for Vary HTTP header with language-based content",
+  title: "Vary Header Demo - AI-powered content negotiation",
+  description: "Interactive demo for Vary HTTP header with AI-powered content negotiation",
 }
 
 export default function RootLayout({

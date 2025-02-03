@@ -23,7 +23,7 @@ export function middleware(request) {
 
     // Add Vary and Cache-Control headers to the response
     response.headers.set('Vary', 'Accept-Language')
-    response.headers.set('Cache-Control', 's-maxage=60, stale-while-revalidate=86400')
+    response.headers.set('Cache-Control', 's-maxage=60')
 
     return response
   }
