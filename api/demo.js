@@ -35,7 +35,7 @@ export async function GET(req) {
     async start(controller) {
       try {
         const textStream = streamText({
-          model: openrouter("openai/gpt-4-mini"),
+          model: openrouter("openai/gpt-4o-mini"),
           prompt: `Translate the following poem to ${primaryLanguage}, ensuring to use country-specific words, phrases, and slang where applicable. If the target language is English (any variant), feel free to introduce region-specific expressions or idioms.
 
 Important: Do NOT translate the following technical terms - keep them exactly as they appear:
