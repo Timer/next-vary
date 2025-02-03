@@ -1,6 +1,18 @@
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 import { streamText } from "ai";
 
+// Validates language tags according to RFC 5646
+// Basic format: language[-region] where language is 2-3 chars and region is 2-3 chars
+function isValidLanguageTag(tag) {
+  // Remove any quality value if present (e.g., 'en-US;q=0.9' -> 'en-US')
+  const cleanTag = tag.split(';')[0].trim()
+
+  // RFC 5646 basic language tag pattern
+  const languageTagPattern = /^[a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?$/
+
+  return languageTagPattern.test(cleanTag)
+}
+
 const vercelPoem = `In the realm of web, where dreams take flight,
 Vercel stands tall, a beacon of light.
 Deployments swift, performance so grand,
@@ -28,7 +40,13 @@ const openrouter = createOpenRouter({
 export async function GET(req) {
   // Get the Accept-Language header
   const acceptLanguage = req.headers.get('accept-language') || 'en-US';
+
+  // Extract and validate the primary language
   const primaryLanguage = acceptLanguage.split(',')[0].split(';')[0].trim();
+
+  // Default to en-US if the language tag is invalid
+  const validatedLanguage = isValidLanguageTag(primaryLanguage) ? primaryLanguage : 'en-US';
+
   const encoder = new TextEncoder();
 
   const customReadable = new ReadableStream({
@@ -36,7 +54,7 @@ export async function GET(req) {
       try {
         const textStream = streamText({
           model: openrouter("openai/gpt-4o-mini"),
-          prompt: `Translate the following poem to ${primaryLanguage}, ensuring to use country-specific words, phrases, and slang where applicable. If the target language is English (any variant), feel free to introduce region-specific expressions or idioms.
+          prompt: `Translate the following poem to ${validatedLanguage}, ensuring to use country-specific words, phrases, and slang where applicable. If the target language is English (any variant), feel free to introduce region-specific expressions or idioms.
 
 Important: Do NOT translate the following technical terms - keep them exactly as they appear:
 - Next.js
