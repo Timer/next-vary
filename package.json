@@ -9,8 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@openrouter/ai-sdk-provider": "^0.1.0",
+    "@tailwindcss/postcss": "^4.0.3",
+    "ai": "^4.1.16",
+    "next": "15.1.6",
+    "postcss": "^8.5.1",
+    "prettier": "^3.4.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "next": "15.1.6"
-  }
+    "tailwindcss": "^4.0.3"
+  },
+  "prettier": {}
 }
