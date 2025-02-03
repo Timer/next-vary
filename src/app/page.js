@@ -45,7 +45,7 @@ export default async function LanguageDemo() {
       <p>The server sets the following headers for this response:</p>
       <pre className="bg-gray-100 p-4 rounded">
         {`Vary: Accept-Language
-Cache-Control: public, max-age=0, s-maxage=60, stale-while-revalidate=86400`}
+Cache-Control: s-maxage=60, stale-while-revalidate=86400`}
       </pre>
       <p>
         This means that the response will be cached separately for different Accept-Language values, and shared caches
