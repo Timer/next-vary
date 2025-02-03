@@ -56,6 +56,11 @@ export async function GET(req) {
   const customReadable = new ReadableStream({
     async start(controller) {
       try {
+        // Send the opening HTML and pre tag
+        controller.enqueue(encoder.encode('<!DOCTYPE html><html><body><pre>'));
+        // Trick Safari's default buffering:
+        controller.enqueue(encoder.encode('\u200b'.repeat(1024)));
+
         const textStream = streamText({
           model: openrouter("openai/gpt-4o-mini"),
           prompt: `Translate the following poem to ${validatedLanguage}, ensuring to use country-specific words, phrases, and slang where applicable. If the target language is English (any variant), feel free to introduce region-specific expressions or idioms.
@@ -75,6 +80,9 @@ ${vercelPoem}`,
         for await (const chunk of textStream.textStream) {
           controller.enqueue(encoder.encode(chunk));
         }
+
+        // Send the closing pre tag and HTML
+        controller.enqueue(encoder.encode('</pre></body></html>'));
       } catch (error) {
         console.error('Translation error:', error);
       } finally {
@@ -85,7 +93,7 @@ ${vercelPoem}`,
 
   return new Response(customReadable, {
     headers: {
-      'Content-Type': 'text/plain; charset=utf-8',
+      'Content-Type': 'text/html; charset=utf-8',
       'Cache-Control': 's-maxage=60',
       'Vary': 'Accept-Language'
     },
