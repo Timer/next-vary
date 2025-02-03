@@ -2,13 +2,17 @@ import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 import { streamText } from "ai";
 
 // Validates language tags according to RFC 5646
-// Basic format: language[-region] where language is 2-3 chars and region is 2-3 chars
+// Handles extended formats like zh-Hans-CN (language-script-region)
 function isValidLanguageTag(tag) {
   // Remove any quality value if present (e.g., 'en-US;q=0.9' -> 'en-US')
   const cleanTag = tag.split(';')[0].trim()
 
-  // RFC 5646 basic language tag pattern
-  const languageTagPattern = /^[a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?$/
+  // More permissive pattern that allows for script subtags (like Hans, Hant)
+  // Format: language[-script][-region] where:
+  // - language is 2-3 chars
+  // - script is 4 chars (optional)
+  // - region is 2-3 chars (optional)
+  const languageTagPattern = /^[a-zA-Z]{2,3}(-[a-zA-Z]{4})?(-[a-zA-Z]{2,3})?$/
 
   return languageTagPattern.test(cleanTag)
 }
